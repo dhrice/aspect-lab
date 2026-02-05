@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASPECT Lab — Michigan State University</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1e2e;
+    --slate: #2d3348;
+    --mid: #5a6178;
+    --muted: #8b90a0;
+    --light: #c8cad4;
+    --offwhite: #f4f3f0;
+    --paper: #faf9f7;
+    --white: #ffffff;
+    --teal: #1a7a7a;
+    --teal-dark: #145f5f;
+    --teal-light: #2a9e9e;
+    --teal-bg: #eef7f7;
+    --teal-subtle: #f5fbfb;
+    --accent: #1b6e6e;
+    --accent-light: #3db5b5;
+    --green: #2a6b4a;
+    --green-bg: #f0f7f3;
+    --warm: #b45a2b;
+    --warm-bg: #fdf6f1;
+    --section-gap: 7rem;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 17px; }
+  body {
+    font-family: 'Outfit', sans-serif; color: var(--ink);
+    background: var(--paper); line-height: 1.7; -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(26, 30, 46, 0.95); backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.06); transition: box-shadow 0.3s ease;
+  }
+  nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.2); }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 0.8rem; text-decoration: none; }
+  .nav-brand img { height: 36px; width: auto; border-radius: 6px; }
+  .nav-brand-text { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--white); letter-spacing: 0.08em; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; align-items: center; }
+  .nav-links a {
+    text-decoration: none; color: rgba(255,255,255,0.6); font-size: 0.82rem; font-weight: 500;
+    letter-spacing: 0.04em; text-transform: uppercase; transition: color 0.25s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px;
+    background: var(--accent-light); transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-back {
+    padding: 0.4rem 1rem; border: 1.5px solid rgba(255,255,255,0.15); border-radius: 100px;
+    color: rgba(255,255,255,0.6); font-size: 0.78rem;
+  }
+  .nav-back:hover { border-color: var(--accent-light); color: var(--accent-light); }
+  .nav-back::after { display: none !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 80vh; display: flex; align-items: center;
+    padding: 6rem 2rem 4rem; position: relative; overflow: hidden;
+    background: var(--ink);
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 70% 40%, rgba(26, 122, 122, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(26, 122, 122, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(42, 158, 158, 0.3), transparent);
+  }
+  .hero-inner {
+    max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .hero-banner { animation: fadeUp 0.8s ease-out; margin-bottom: 2.5rem; width: 100%; max-width: 720px; }
+  .banner-img {
+    width: 100%; height: auto; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .hero-text { animation: fadeUp 0.8s ease-out 0.2s both; max-width: 640px; }
+  .hero-label {
+    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 1.5rem;
+  }
+  .hero-desc {
+    font-size: 1.15rem; line-height: 1.85; color: rgba(255,255,255,0.65); max-width: 640px;
+    margin-bottom: 1rem; font-weight: 300;
+  }
+  .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.8rem;
+    border-radius: 6px; font-size: 0.88rem; font-weight: 500; text-decoration: none; transition: all 0.3s ease; letter-spacing: 0.02em;
+  }
+  .btn-primary { background: var(--teal); color: var(--white); }
+  .btn-primary:hover { background: var(--teal-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26, 122, 122, 0.3); }
+  .btn-outline-light { border: 1.5px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); background: transparent; }
+  .btn-outline-light:hover { border-color: var(--accent-light); color: var(--accent-light); transform: translateY(-2px); }
+  .btn-outline { border: 1.5px solid var(--light); color: var(--slate); background: transparent; }
+  .btn-outline:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-2px); }
+
+  /* ─── SECTION COMMONS ─── */
+  section { padding: var(--section-gap) 2rem; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 0.8rem; display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-label::before { content: ''; width: 20px; height: 2px; background: var(--teal); }
+  .section-title {
+    font-family: 'Libre Baskerville', serif; font-size: 2.2rem; font-weight: 700;
+    line-height: 1.25; margin-bottom: 1.2rem; letter-spacing: -0.015em;
+  }
+  .section-subtitle {
+    color: var(--mid); font-size: 1.05rem; max-width: 600px; font-weight: 300;
+    line-height: 1.7; margin-bottom: 3rem;
+  }
+
+  /* ─── MISSION / ABOUT ─── */
+  #about { background: var(--white); }
+  .about-content {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+  }
+  .about-text { font-size: 1.05rem; line-height: 1.85; color: var(--mid); font-weight: 300; }
+  .about-text strong { color: var(--ink); font-weight: 600; }
+  .about-text p + p { margin-top: 1.2rem; }
+
+  .acronym-grid { display: flex; flex-direction: column; gap: 0.8rem; }
+  .acronym-item {
+    display: flex; align-items: center; gap: 1.2rem; padding: 1rem 1.4rem;
+    background: var(--teal-subtle); border-radius: 10px;
+    border: 1px solid rgba(26, 122, 122, 0.08); transition: all 0.3s;
+  }
+  .acronym-item:hover { background: var(--teal-bg); transform: translateX(6px); }
+  .acronym-letter {
+    font-family: 'Libre Baskerville', serif; font-size: 1.5rem; font-weight: 700;
+    color: var(--teal); width: 32px; flex-shrink: 0;
+  }
+  .acronym-word { font-size: 0.95rem; color: var(--mid); font-weight: 400; }
+
+  /* ─── PEOPLE ─── */
+  #people { background: var(--paper); }
+  .pi-card {
+    display: grid; grid-template-columns: 200px 1fr; gap: 2.5rem; align-items: center;
+    padding: 2.5rem; background: var(--white); border-radius: 16px;
+    border: 1px solid rgba(26, 30, 46, 0.05); margin-bottom: 3rem;
+    box-shadow: 0 4px 20px rgba(26, 30, 46, 0.04);
+  }
+  .pi-photo { width: 200px; height: 200px; border-radius: 50%; overflow: hidden; }
+  .pi-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  .pi-info h3 { font-family: 'Libre Baskerville', serif; font-size: 1.5rem; margin-bottom: 0.3rem; }
+  .pi-role {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1rem;
+  }
+  .pi-bio { color: var(--mid); font-size: 0.95rem; line-height: 1.7; font-weight: 300; }
+  .pi-links { margin-top: 1rem; display: flex; gap: 0.8rem; }
+  .pi-link {
+    font-size: 0.82rem; color: var(--teal); text-decoration: none; font-weight: 500;
+    transition: color 0.25s;
+  }
+  .pi-link:hover { color: var(--teal-dark); text-decoration: underline; }
+
+  .members-label {
+    font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--muted); margin-bottom: 1.5rem;
+  }
+  .members-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .member-card {
+    padding: 2rem 1.6rem; border: 1px solid rgba(26, 30, 46, 0.06); border-radius: 12px;
+    background: var(--white); transition: all 0.3s ease; text-align: center;
+  }
+  .member-card:hover { box-shadow: 0 8px 24px rgba(26, 30, 46, 0.06); transform: translateY(-3px); }
+  .member-photo {
+    width: 100px; height: 100px; border-radius: 50%; overflow: hidden;
+    margin: 0 auto 1.2rem; background: var(--offwhite);
+  }
+  .member-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .member-photo-placeholder {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--light);
+  }
+  .member-photo-placeholder svg { width: 36px; height: 36px; }
+  .member-role {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 0.5rem; display: inline-block; padding: 0.2rem 0.7rem; border-radius: 100px;
+  }
+  .member-role.phd { background: var(--teal-bg); color: var(--teal); }
+  .member-role.undergrad { background: var(--green-bg); color: var(--green); }
+  .member-name {
+    font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700;
+    margin-bottom: 0.4rem; display: block;
+  }
+  .member-link { text-decoration: none; color: var(--ink); transition: color 0.25s; }
+  .member-link:hover { color: var(--teal); }
+  .member-desc { font-size: 0.82rem; color: var(--mid); font-weight: 300; line-height: 1.6; }
+
+  /* ─── RESEARCH ─── */
+  #research { background: var(--white); }
+  .research-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .research-card {
+    padding: 2.4rem 2rem; border: 1px solid rgba(26, 30, 46, 0.06); border-radius: 12px;
+    background: var(--paper); transition: all 0.4s ease; position: relative; overflow: hidden;
+  }
+  .research-card::before {
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
+    background: var(--teal); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease;
+  }
+  .research-card:hover::before { transform: scaleX(1); }
+  .research-card:hover { box-shadow: 0 12px 40px rgba(26, 30, 46, 0.06); transform: translateY(-4px); }
+  .research-icon {
+    width: 44px; height: 44px; border-radius: 10px; display: flex;
+    align-items: center; justify-content: center; margin-bottom: 1.4rem; font-size: 1.3rem;
+  }
+  .research-card:nth-child(1) .research-icon { background: var(--teal-bg); color: var(--teal); }
+  .research-card:nth-child(2) .research-icon { background: var(--warm-bg); color: var(--warm); }
+  .research-card:nth-child(3) .research-icon { background: var(--green-bg); color: var(--green); }
+  .research-card:nth-child(4) .research-icon { background: #eef0f8; color: var(--slate); }
+  .research-card h3 { font-family: 'Libre Baskerville', serif; font-size: 1.12rem; margin-bottom: 0.9rem; line-height: 1.35; }
+  .research-card p { color: var(--mid); font-size: 0.9rem; line-height: 1.7; font-weight: 300; }
+  .research-card .project-tags { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .project-tag {
+    font-size: 0.72rem; padding: 0.2rem 0.6rem; border-radius: 100px;
+    background: rgba(26, 122, 122, 0.06); color: var(--teal); font-weight: 500;
+  }
+
+  /* ─── PUBLICATIONS ─── */
+  #publications { background: var(--paper); }
+  .pub-list { display: flex; flex-direction: column; gap: 1rem; }
+  .pub-item {
+    display: grid; grid-template-columns: 60px 1fr; gap: 1.5rem; align-items: start;
+    padding: 1.6rem 2rem; background: var(--white); border-radius: 10px;
+    border: 1px solid rgba(26, 30, 46, 0.04); transition: all 0.3s ease;
+  }
+  .pub-item:hover { box-shadow: 0 4px 20px rgba(26, 30, 46, 0.05); transform: translateX(4px); }
+  .pub-year {
+    font-family: 'Libre Baskerville', serif; font-size: 1rem; color: var(--teal);
+    font-weight: 700; padding-top: 0.15rem;
+  }
+  .pub-info h4 { font-size: 1rem; font-weight: 600; line-height: 1.5; margin-bottom: 0.4rem; color: var(--ink); }
+  .pub-info .authors { font-size: 0.85rem; color: var(--mid); margin-bottom: 0.3rem; font-weight: 300; }
+  .pub-info .venue { font-size: 0.82rem; color: var(--muted); font-style: italic; }
+
+  /* ─── FOR STUDENTS ─── */
+  #students {
+    background: var(--ink); color: var(--white); position: relative; overflow: hidden;
+  }
+  #students::before {
+    content: ''; position: absolute; top: -100px; right: -100px; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(26, 122, 122, 0.2) 0%, transparent 70%); pointer-events: none;
+  }
+  #students .section-label { color: var(--accent-light); }
+  #students .section-label::before { background: var(--accent-light); }
+  #students .section-title { color: var(--white); }
+  #students .section-subtitle { color: rgba(255,255,255,0.5); }
+
+  .students-content { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .students-text { color: rgba(255,255,255,0.7); font-weight: 300; line-height: 1.85; font-size: 1.02rem; }
+  .students-text strong { color: var(--white); font-weight: 600; }
+  .students-text p + p { margin-top: 1.2rem; }
+  .students-text a { color: var(--accent-light); text-decoration: underline; }
+
+  .looking-for { display: flex; flex-direction: column; gap: 1rem; }
+  .looking-item {
+    display: flex; align-items: start; gap: 1rem; padding: 1.2rem 1.4rem;
+    background: rgba(255,255,255,0.04); border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.06); transition: all 0.3s;
+  }
+  .looking-item:hover { background: rgba(255,255,255,0.08); transform: translateX(6px); }
+  .looking-check {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(42, 158, 158, 0.2); color: var(--accent-light);
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem; margin-top: 0.1rem;
+  }
+  .looking-text { color: rgba(255,255,255,0.7); font-size: 0.92rem; font-weight: 300; line-height: 1.6; }
+  .looking-text strong { color: var(--white); font-weight: 500; }
+
+  /* ─── NEWS ─── */
+  #news { background: var(--white); }
+  .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .news-card {
+    padding: 2rem; border: 1px solid rgba(26, 30, 46, 0.06); border-radius: 12px;
+    background: var(--paper); transition: all 0.3s;
+  }
+  .news-card:hover { box-shadow: 0 8px 24px rgba(26, 30, 46, 0.06); transform: translateY(-3px); }
+  .news-date { font-size: 0.75rem; font-weight: 600; color: var(--teal); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.8rem; }
+  .news-card h3 { font-family: 'Libre Baskerville', serif; font-size: 1.05rem; line-height: 1.4; margin-bottom: 0.6rem; }
+  .news-card p { font-size: 0.88rem; color: var(--mid); font-weight: 300; line-height: 1.6; }
+  .news-type {
+    display: inline-block; margin-top: 1rem; padding: 0.2rem 0.7rem; border-radius: 100px;
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .news-type.paper { background: var(--teal-bg); color: var(--teal); }
+  .news-type.talk { background: var(--warm-bg); color: var(--warm); }
+  .news-type.award { background: var(--green-bg); color: var(--green); }
+
+  /* ─── CONTACT ─── */
+  #contact { background: var(--paper); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .contact-info { display: flex; flex-direction: column; gap: 1.6rem; }
+  .contact-item { display: flex; gap: 1rem; align-items: start; }
+  .contact-icon {
+    width: 40px; height: 40px; border-radius: 10px; background: var(--teal-bg);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--teal);
+  }
+  .contact-detail h4 {
+    font-size: 0.82rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .contact-detail p, .contact-detail a { font-size: 0.95rem; color: var(--ink); text-decoration: none; line-height: 1.6; }
+  .contact-detail a:hover { color: var(--teal); }
+
+  .ext-links { display: flex; flex-direction: column; gap: 0.8rem; }
+  .ext-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 1.4rem; background: var(--white); border: 1px solid rgba(26, 30, 46, 0.05);
+    border-radius: 10px; text-decoration: none; color: var(--ink);
+    font-weight: 500; font-size: 0.92rem; transition: all 0.3s;
+  }
+  .ext-link:hover { transform: translateX(6px); box-shadow: 0 4px 16px rgba(26, 30, 46, 0.05); border-color: var(--teal); }
+  .ext-link-arrow { color: var(--muted); transition: all 0.3s; font-size: 1.1rem; }
+  .ext-link:hover .ext-link-arrow { color: var(--teal); transform: translateX(4px); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.4); text-align: center;
+    padding: 3rem 2rem; font-size: 0.82rem;
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .footer-brand { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── MOBILE ─── */
+  .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; color: var(--white); }
+  .menu-toggle svg { width: 24px; height: 24px; }
+
+  @media (max-width: 1000px) {
+    .members-grid { grid-template-columns: repeat(2, 1fr); }
+    .research-grid { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    html { font-size: 15px; }
+    .hero-inner { gap: 2rem; }
+    .banner-img { border-radius: 10px; }
+    .hero h1 { font-size: 2.4rem; }
+    .about-content, .students-content, .contact-grid { grid-template-columns: 1fr; }
+    .pi-card { grid-template-columns: 1fr; text-align: center; }
+    .pi-photo { margin: 0 auto; }
+    .pub-item { grid-template-columns: 1fr; gap: 0.6rem; }
+    .menu-toggle { display: block; }
+    .nav-links {
+      display: none; position: absolute; top: 64px; left: 0; right: 0;
+      background: var(--ink); flex-direction: column; padding: 1.5rem 2rem;
+      gap: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+    }
+    .nav-links.open { display: flex; }
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2rem; }
+    .section-title { font-size: 1.7rem; }
+    section { padding: 4rem 1.2rem; }
+    .hero { padding: 5rem 1.2rem 3rem; }
+    .members-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── NAV ─── -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-brand">
+      <img src="ASPECT_lab_thumbnail.png" alt="ASPECT Lab">
+      <span class="nav-brand-text">ASPECT</span>
+    </a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#people">People</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#students">Prospective Students</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://dhrice.org" class="nav-back">← dhrice.org</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-banner">
+      <img src="ASPECT_lab_banner.png" alt="ASPECT Lab" class="banner-img">
+    </div>
+    <div class="hero-text">
+      <p class="hero-desc">
+        Investigating how social identity, platform affordances, and technological structures shape the information we encounter, engage with, and act upon.
+      </p>
+      <div class="hero-label">Michigan State University · Department of Advertising + Public Relations</div>
+      <div class="hero-links">
+        <a href="#research" class="btn btn-primary">Our Research</a>
+        <a href="#students" class="btn btn-outline-light">Join the Lab</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ABOUT ─── -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About the Lab</div>
+    <h2 class="section-title">What We Study</h2>
+    <p class="section-subtitle">Understanding communication in an identity-driven information ecosystem.</p>
+
+    <div class="about-content">
+      <div class="about-text reveal">
+        <p>The ASPECT Lab at Michigan State University investigates how the information we encounter, engage with, and act upon is shaped by <strong>internal psychological factors</strong> and <strong>external technological structures</strong>.</p>
+        <p>Our work draws on computational methods, large-scale data collection, survey research, and experimental design to understand modern communication ecosystems. We are particularly interested in how <strong>social identities</strong> — political, cultural, and group affiliations — systematically influence the information environments people inhabit.</p>
+        <p>Central to our work is the <strong>Identity Driven Information Ecosystem (IDIE) framework</strong>, which highlights how social identities shape not just what information people consume, but the platforms they use, the communities they join, and the content they create.</p>
+      </div>
+      <div class="acronym-grid reveal">
+        <div class="acronym-item"><span class="acronym-letter">A</span><span class="acronym-word">Affordances</span></div>
+        <div class="acronym-item"><span class="acronym-letter">S</span><span class="acronym-word">Social Identity</span></div>
+        <div class="acronym-item"><span class="acronym-letter">P</span><span class="acronym-word">Political Communication</span></div>
+        <div class="acronym-item"><span class="acronym-letter">E</span><span class="acronym-word">E-Health</span></div>
+        <div class="acronym-item"><span class="acronym-letter">C</span><span class="acronym-word">Communication</span></div>
+        <div class="acronym-item"><span class="acronym-letter">T</span><span class="acronym-word">Technologies</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PEOPLE ─── -->
+<section id="people">
+  <div class="container">
+    <div class="section-label">People</div>
+    <h2 class="section-title">Lab Members</h2>
+    <p class="section-subtitle">The people behind the research.</p>
+
+    <!-- PI -->
+    <div class="pi-card reveal">
+      <div class="pi-photo">
+        <img src="headshot.png" alt="Dan Hiaeshutter-Rice">
+      </div>
+      <div class="pi-info">
+        <h3>Dan Hiaeshutter-Rice, Ph.D.</h3>
+        <div class="pi-role">Principal Investigator · Assistant Professor</div>
+        <p class="pi-bio">Assistant Professor in the Department of Advertising + Public Relations at Michigan State University. His research explores how variations in technology and affordances shape political communication, with a focus on computational methods and large-scale data collection. He earned his Ph.D. from the University of Michigan and also holds an M.P.P. from the Gerald R. Ford School of Public Policy.</p>
+        <div class="pi-links">
+          <a href="https://dhrice.org" class="pi-link">Personal Site →</a>
+          <a href="https://scholar.google.com/citations?user=fPlinyoAAAAJ&hl=en&oi=ao" class="pi-link">Google Scholar →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Members -->
+    <div class="members-label">Current Members</div>
+    <div class="members-grid">
+
+      <div class="member-card reveal">
+        <div class="member-photo">
+          <div class="member-photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="member-role phd">Ph.D. Student</div>
+        <a href="#" class="member-name member-link">Layla Chen</a>
+        <div class="member-desc">Ph.D. student, Department of Advertising + Public Relations. Research interests in political communication and computational methods.</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo">
+          <div class="member-photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="member-role undergrad">Undergraduate Researcher</div>
+        <a href="#" class="member-name member-link">Lael Falde</a>
+        <div class="member-desc">Undergraduate research assistant, ASPECT Lab.</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo">
+          <div class="member-photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="member-role undergrad">Undergraduate Researcher</div>
+        <a href="#" class="member-name member-link">Sam Radke</a>
+        <div class="member-desc">Undergraduate research assistant, ASPECT Lab.</div>
+      </div>
+
+      <div class="member-card reveal">
+        <div class="member-photo">
+          <div class="member-photo-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+        </div>
+        <div class="member-role undergrad">Undergraduate Researcher</div>
+        <a href="#" class="member-name member-link">Kaylee Imo</a>
+        <div class="member-desc">Undergraduate research assistant, ASPECT Lab.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ─── RESEARCH ─── -->
+<section id="research">
+  <div class="container">
+    <div class="section-label">Research</div>
+    <h2 class="section-title">Active Research Areas</h2>
+    <p class="section-subtitle">Our work spans political communication, platform studies, health communication, and computational social science.</p>
+
+    <div class="research-grid">
+      <div class="research-card reveal">
+        <div class="research-icon">⬡</div>
+        <h3>Platform Affordances &amp; Campaign Communication</h3>
+        <p>How do the technical features of communication platforms shape what political campaigns say and how they say it? We study content across platforms to understand how structure and users shape political messaging.</p>
+        <div class="project-tags">
+          <span class="project-tag">IDIE Framework</span>
+          <span class="project-tag">Cross-Platform</span>
+          <span class="project-tag">Computational Methods</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal">
+        <div class="research-icon">◈</div>
+        <h3>Information Bias &amp; News Ecosystems</h3>
+        <p>Examining systematic biases in how information is produced, distributed, and consumed — from engagement asymmetries on Facebook to negativity biases in news coverage and the effects of press freedom on public responsiveness.</p>
+        <div class="project-tags">
+          <span class="project-tag">Engagement Asymmetries</span>
+          <span class="project-tag">Negativity Bias</span>
+          <span class="project-tag">Press Freedom</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal">
+        <div class="research-icon">◉</div>
+        <h3>Identity, Culture &amp; Political Expression</h3>
+        <p>Political identity extends far beyond the ballot box. We study how partisan identities are reflected in music tastes, television consumption, visual imagery, food preferences, and lifestyle choices — and how these cultural signals shape political evaluations.</p>
+        <div class="project-tags">
+          <span class="project-tag">Cultural Cues</span>
+          <span class="project-tag">Partisan Identity</span>
+          <span class="project-tag">Consumer Behavior</span>
+        </div>
+      </div>
+
+      <div class="research-card reveal">
+        <div class="research-icon">◎</div>
+        <h3>Health, Science &amp; Environmental Communication</h3>
+        <p>Investigating how platforms and framing affect engagement with health and science content — from digital wellness misinformation and science influencer polarization to invasive species messaging and environmental advocacy.</p>
+        <div class="project-tags">
+          <span class="project-tag">Science Influencers</span>
+          <span class="project-tag">Digital Wellness</span>
+          <span class="project-tag">Environmental Messaging</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PUBLICATIONS ─── -->
+<section id="publications">
+  <div class="container">
+    <div class="section-label">Publications</div>
+    <h2 class="section-title">Lab Publications</h2>
+    <p class="section-subtitle">Peer-reviewed work from the ASPECT Lab. Full list on <a href="https://scholar.google.com/citations?user=fPlinyoAAAAJ&hl=en&oi=ao" target="_blank" style="color:var(--teal);text-decoration:underline;">Google Scholar</a>.</p>
+
+    <div class="pub-list">
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2024</div>
+        <div class="pub-info">
+          <h4>Identity Driven Information Ecosystems</h4>
+          <div class="authors">Hiaeshutter-Rice, D., Madrigal, G., Ploger, G., Carr, S., Carbone, M., Battocchio, A. F., &amp; Soroka, S.</div>
+          <div class="venue">Communication Theory, 34(2), 82–91</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2024</div>
+        <div class="pub-info">
+          <h4>How Science Influencers Polarize Supportive and Skeptical Communities Around Politicized Science</h4>
+          <div class="authors">Chinn, S., Hiaeshutter-Rice, D., &amp; Chen, K.</div>
+          <div class="venue">Political Communication, 41(4), 627–648</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2024</div>
+        <div class="pub-info">
+          <h4>Climate Change Advocacy and Engagement on Social Media</h4>
+          <div class="authors">Hart, P. S., Feldman, L., Choi, S., Chinn, S., &amp; Hiaeshutter-Rice, D.</div>
+          <div class="venue">Science Communication</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2024</div>
+        <div class="pub-info">
+          <h4>Testing How Militaristic and Xenophobic Language Affects Engagement with Facebook Posts About Invasive Species</h4>
+          <div class="authors">Chinn, S., Hiaeshutter-Rice, D., Hart, P. S., &amp; Larson, B. M.</div>
+          <div class="venue">Environmental Communication, 18(3), 351–357</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2023</div>
+        <div class="pub-info">
+          <h4>Cued by Culture: Political Imagery and Partisan Evaluations</h4>
+          <div class="authors">Hiaeshutter-Rice, D., Neuner, F., &amp; Soroka, S.</div>
+          <div class="venue">Political Behavior, 1–19</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2022</div>
+        <div class="pub-info">
+          <h4>The Language of Extremism on Social Media: An Examination of Posts, Comments, and Themes on Reddit</h4>
+          <div class="authors">Hiaeshutter-Rice, D. &amp; Hawkins, I.</div>
+          <div class="venue">Frontiers in Political Science, 4, 1–16</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2021</div>
+        <div class="pub-info">
+          <h4>Understanding Audience Engagement with Mainstream and Alternative News Posts on Facebook</h4>
+          <div class="authors">Hiaeshutter-Rice, D. &amp; Weeks, B. E.</div>
+          <div class="venue">Digital Journalism, 1–30</div>
+        </div>
+      </div>
+
+      <div class="pub-item reveal">
+        <div class="pub-year">2021</div>
+        <div class="pub-info">
+          <h4>Platform Effects on Alternative Influencer Content: Understanding How Audiences and Channels Shape Misinformation Online</h4>
+          <div class="authors">Hiaeshutter-Rice, D., Chinn, S., &amp; Chen, K.</div>
+          <div class="venue">Frontiers in Political Science, 3, 53</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align: center; margin-top: 2.5rem;">
+      <a href="https://scholar.google.com/citations?user=fPlinyoAAAAJ&hl=en&oi=ao" class="btn btn-outline" target="_blank">View All on Google Scholar →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOR STUDENTS ─── -->
+<section id="students">
+  <div class="container">
+    <div class="section-label">Prospective Students</div>
+    <h2 class="section-title">Join the Lab</h2>
+    <p class="section-subtitle">We're always looking for motivated students interested in our research areas.</p>
+
+    <div class="students-content">
+      <div class="students-text reveal">
+        <p>The ASPECT Lab welcomes graduate and undergraduate students who are interested in <strong>political communication</strong>, <strong>computational social science</strong>, <strong>platform studies</strong>, and <strong>health/science communication</strong>.</p>
+        <p>Graduate students in the lab develop skills in computational research methods including large-scale data collection, content analysis, natural language processing, and statistical modeling. Students also gain experience with survey and experimental research designs.</p>
+        <p>Undergraduate research assistants contribute to ongoing projects and gain hands-on experience with academic research. Positions are available on a rolling basis.</p>
+        <p>If you're interested, please <a href="#contact">reach out directly</a> with a brief description of your research interests and relevant experience.</p>
+      </div>
+      <div class="looking-for reveal">
+        <div class="looking-item">
+          <div class="looking-check">✓</div>
+          <div class="looking-text"><strong>Computational skills</strong> — experience with Python, R, or other programming languages for data collection and analysis</div>
+        </div>
+        <div class="looking-item">
+          <div class="looking-check">✓</div>
+          <div class="looking-text"><strong>Research curiosity</strong> — genuine interest in understanding how communication platforms shape political and social behavior</div>
+        </div>
+        <div class="looking-item">
+          <div class="looking-check">✓</div>
+          <div class="looking-text"><strong>Methodological rigor</strong> — commitment to transparent, reproducible, and well-designed research</div>
+        </div>
+        <div class="looking-item">
+          <div class="looking-check">✓</div>
+          <div class="looking-text"><strong>Collaborative mindset</strong> — willingness to work across projects and contribute to a supportive lab community</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── NEWS ─── -->
+<section id="news">
+  <div class="container">
+    <div class="section-label">News</div>
+    <h2 class="section-title">Recent Updates</h2>
+    <p class="section-subtitle">Latest from the ASPECT Lab.</p>
+
+    <div class="news-grid">
+      <div class="news-card reveal">
+        <div class="news-date">October 2025</div>
+        <h3>Invited Talk at UCLA</h3>
+        <p>Dr. Hiaeshutter-Rice presented "Enemies of the (E)state: News, Attacks, and a Free Press" at UCLA's Political Communication &amp; Behavior Lab.</p>
+        <span class="news-type talk">Invited Talk</span>
+      </div>
+
+      <div class="news-card reveal">
+        <div class="news-date">June 2025</div>
+        <h3>Paper at AAPOR</h3>
+        <p>Fioroni, Hiaeshutter-Rice, and Ploger presented work on rethinking the impact of "bad press" at the AAPOR annual conference.</p>
+        <span class="news-type paper">Conference</span>
+      </div>
+
+      <div class="news-card reveal">
+        <div class="news-date">April 2025</div>
+        <h3>Paper at MPSA</h3>
+        <p>New work on news, press attacks, and press freedom presented at the Midwest Political Science Association annual conference in Chicago.</p>
+        <span class="news-type paper">Conference</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Get in Touch</h2>
+    <p class="section-subtitle">Interested in collaborating or joining the lab? We'd love to hear from you.</p>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="contact-detail">
+            <h4>Location</h4>
+            <p>404 S. Wilson Rd., Room 312<br>Department of Advertising + Public Relations<br>Michigan State University<br>East Lansing, MI 48824</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <div class="contact-detail">
+            <h4>Email</h4>
+            <a href="mailto:dhrice@msu.edu">dhrice@msu.edu</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="ext-links reveal">
+        <a href="https://dhrice.org" class="ext-link">
+          <span>Dr. Hiaeshutter-Rice's Personal Site</span>
+          <span class="ext-link-arrow">→</span>
+        </a>
+        <a href="https://scholar.google.com/citations?user=fPlinyoAAAAJ&hl=en&oi=ao" class="ext-link" target="_blank">
+          <span>Google Scholar</span>
+          <span class="ext-link-arrow">→</span>
+        </a>
+        <a href="https://github.com/dhrice" class="ext-link" target="_blank">
+          <span>GitHub</span>
+          <span class="ext-link-arrow">→</span>
+        </a>
+        <a href="https://comartsci.msu.edu/our-people/dan-hiaeshutter-rice" class="ext-link" target="_blank">
+          <span>MSU Faculty Profile</span>
+          <span class="ext-link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">ASPECT Lab</div>
+  <p>Department of Advertising + Public Relations · <a href="https://comartsci.msu.edu">College of Communication Arts &amp; Sciences</a> · Michigan State University</p>
+  <p style="margin-top:0.5rem;">© 2026 ASPECT Lab · <a href="https://dhrice.org">dhrice.org</a></p>
+</footer>
+
+<script>
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => { document.querySelector('.nav-links').classList.remove('open'); });
+  });
+</script>
+
+</body>
+</html>
