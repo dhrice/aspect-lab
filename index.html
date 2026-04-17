@@ -181,17 +181,27 @@
     font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
     color: var(--muted); margin-bottom: 1.5rem;
   }
+  .members-label.affiliates { margin-top: 3rem; }
   .members-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
   .member-card {
     padding: 2rem 1.6rem; border: 1px solid rgba(26, 30, 46, 0.06); border-radius: 12px;
     background: var(--white); transition: all 0.3s ease; text-align: center;
   }
   .member-card:hover { box-shadow: 0 8px 24px rgba(26, 30, 46, 0.06); transform: translateY(-3px); }
+  a.member-card {
+    display: block; text-decoration: none; color: inherit;
+  }
+  a.member-card:hover .member-name { color: var(--teal); }
   .member-photo {
     width: 100px; height: 100px; border-radius: 50%; overflow: hidden;
     margin: 0 auto 1.2rem; background: var(--offwhite);
+    display: flex; align-items: center; justify-content: center;
   }
-  .member-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .member-photo img {
+    display: block; width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+    max-width: 100%; max-height: 100%;
+  }
   .member-photo-placeholder {
     width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--light);
   }
@@ -202,6 +212,7 @@
   }
   .member-role.phd { background: var(--teal-bg); color: var(--teal); }
   .member-role.undergrad { background: var(--green-bg); color: var(--green); }
+  .member-role.affiliate { background: var(--warm-bg); color: var(--warm); }
   .member-name {
     font-family: 'Libre Baskerville', serif; font-size: 1rem; font-weight: 700;
     margin-bottom: 0.4rem; display: block;
@@ -536,6 +547,30 @@
         <a href="#" class="member-name member-link">Sam Radtka</a>
         <div class="member-desc">Undergraduate research assistant, ASPECT Lab.</div>
       </div>
+
+    </div>
+
+    <!-- Affiliates -->
+    <div class="members-label affiliates">Affiliate Members</div>
+    <div class="members-grid">
+
+      <a href="https://www.uab.edu/cas/communication/people/faculty/ian-hawkins" target="_blank" rel="noopener" class="member-card reveal">
+        <div class="member-photo">
+          <img src="ian_hawkins.png" alt="Ian Hawkins">
+        </div>
+        <div class="member-role affiliate">Affiliate</div>
+        <span class="member-name">Ian Hawkins, Ph.D.</span>
+        <div class="member-desc">Assistant Professor, University of Alabama at Birmingham.</div>
+      </a>
+
+      <a href="https://lsa.umich.edu/comm/people/regular-faculty/solhart.html" target="_blank" rel="noopener" class="member-card reveal">
+        <div class="member-photo">
+          <img src="sol_hart.png" alt="Sol Hart">
+        </div>
+        <div class="member-role affiliate">Affiliate</div>
+        <span class="member-name">Sol Hart, Ph.D.</span>
+        <div class="member-desc">Professor, University of Michigan.</div>
+      </a>
 
     </div>
   </div>
